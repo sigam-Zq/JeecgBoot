@@ -7,7 +7,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 #RUN mkdir -p /jeecg-boot/config/jeecg/
 
 # 解决linuxkit 精简镜像对 locale 裁剪导致中文乱码问题
-RUN yum install -y \
+RUN yum install -y --setopt=tsflags=nodocs \
         glibc-langpack-en \
         glibc-common \
     && yum clean all
@@ -25,4 +25,4 @@ ADD ./target/jeecg-system-start-3.9.1.jar ./
 
 RUN mkdir -p /jeecg-boot/config
 
-CMD sleep 60;java -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/./urandom -jar jeecg-system-start-3.9.1.jar
+CMD sleep 60 && exec java -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/./urandom -jar jeecg-system-start-3.9.1.jar
